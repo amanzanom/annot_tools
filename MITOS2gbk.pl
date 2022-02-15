@@ -4,8 +4,8 @@
 #   Author: Alejandro Manzano Marin
 #
 #   File: MITOS2gbk.pl
-#   Date: 14-12-2018
-#   Version: 0.2
+#   Date: 05-11-2021
+#   Version: 0.3
 #
 #   Usage:
 #      perl MITOS2gbk.pl --infile|-i <MITOS_result_file> [options]
@@ -21,7 +21,7 @@
 #             as begining for subject for bug reporting, feature request or whatever
 #             (of course realted to the software).
 #
-#    COPYRIGHT: Copyright (C) 2017  Alejandro Manzano-Marin.
+#    COPYRIGHT: Copyright (C) 2021  Alejandro Manzano-Marin.
 #
 #    LICENCE: This program is free software: you can redistribute it and/or modify it under the terms
 #             of the GNU General Public License as published by the Free Software Foundation, either
@@ -36,9 +36,10 @@
 
 
 # Load modules
+use Data::Dumper;
+use File::Basename;
 use Getopt::Long;
 use Pod::Usage;
-use Data::Dumper;
 
 
 # Define subroutines
@@ -191,7 +192,7 @@ sub loadGenCodeNCBI {
 			
 			# Fill the %genCode hash with the available genetic codes
 			%{$genCode{$genCodeNum}}=();
-			print "Genetic code: $genCodeNum\n";
+#			print "Genetic code: $genCodeNum\n";
 			for ($i=0; $i<scalar(@genCode_aa); $i++){
 				$codonSeq= $genCode_1st[$i].$genCode_2nd[$i].$genCode_3rd[$i];
 				$codonSeq=~ tr/ATGC/atgc/;
@@ -288,45 +289,45 @@ my %aaNames=(
 );
 
 my %names_gene=(
-	'trnA' => 'transfer RNA alanine',
-	'trnR' => 'transfer RNA arginine',
-	'trnN' => 'transfer RNA asparagine',
-	'trnD' => 'transfer RNA aspartic acid',
-	'trnC' => 'transfer RNA cysteine',
-	'trnE' => 'transfer RNA glutamic acid',
-	'trnQ' => 'transfer RNA glutamine',
-	'trnG' => 'transfer RNA glycine',
-	'trnH' => 'transfer RNA histidine',
-	'trnI' => 'transfer RNA isoleucine',
+	'trnA'  => 'transfer RNA alanine',
+	'trnR'  => 'transfer RNA arginine',
+	'trnN'  => 'transfer RNA asparagine',
+	'trnD'  => 'transfer RNA aspartic acid',
+	'trnC'  => 'transfer RNA cysteine',
+	'trnE'  => 'transfer RNA glutamic acid',
+	'trnQ'  => 'transfer RNA glutamine',
+	'trnG'  => 'transfer RNA glycine',
+	'trnH'  => 'transfer RNA histidine',
+	'trnI'  => 'transfer RNA isoleucine',
 	'trnL1' => 'transfer RNA leucine',
 	'trnL2' => 'transfer RNA leucine',
-	'trnK' => 'transfer RNA lysine',
-	'trnM' => 'transfer RNA methionine',
-	'trnF' => 'transfer RNA phenylalanine',
-	'trnP' => 'transfer RNA proline',
+	'trnK'  => 'transfer RNA lysine',
+	'trnM'  => 'transfer RNA methionine',
+	'trnF'  => 'transfer RNA phenylalanine',
+	'trnP'  => 'transfer RNA proline',
 	'trnS1' => 'transfer RNA serine',
 	'trnS2' => 'transfer RNA serine',
-	'trnT' => 'transfer RNA threonine',
-	'trnW' => 'transfer RNA tryptophan',
-	'trnY' => 'transfer RNA tyrosine',
-	'trnV' => 'transfer RNA valine',
-	'trnU' => 'transfer RNA selenocysteine',
-	'trnO' => 'transfer RNA pyrrolysine',
-	'rrnS' => 'small subunit ribosomal RNA',
-	'rrnL' => 'large subunit ribosomal RNA',
-	'atp6' => 'ATP synthase F0 subunit a',
-	'atp8' => 'ATP synthase F0 subunit 8',
-	'cob' => 'apocytochrome b',
-	'cox1' => 'cytochrome c oxidase subunit 1',
-	'cox2' => 'cytochrome c oxidase subunit 2',
-	'cox3' => 'cytochrome c oxidase subunit 3',
-	'nad1' => 'NADH dehydrogenase subunit 1',
-	'nad2' => 'NADH dehydrogenase subunit 2',
-	'nad3' => 'NADH dehydrogenase subunit 3',
-	'nad4' => 'NADH dehydrogenase subunit 4',
+	'trnT'  => 'transfer RNA threonine',
+	'trnW'  => 'transfer RNA tryptophan',
+	'trnY'  => 'transfer RNA tyrosine',
+	'trnV'  => 'transfer RNA valine',
+	'trnU'  => 'transfer RNA selenocysteine',
+	'trnO'  => 'transfer RNA pyrrolysine',
+	'rrnS'  => 'small subunit ribosomal RNA',
+	'rrnL'  => 'large subunit ribosomal RNA',
+	'atp6'  => 'ATP synthase F0 subunit a',
+	'atp8'  => 'ATP synthase F0 subunit 8',
+	'cob'   => 'apocytochrome b',
+	'cox1'  => 'cytochrome c oxidase subunit 1',
+	'cox2'  => 'cytochrome c oxidase subunit 2',
+	'cox3'  => 'cytochrome c oxidase subunit 3',
+	'nad1'  => 'NADH dehydrogenase subunit 1',
+	'nad2'  => 'NADH dehydrogenase subunit 2',
+	'nad3'  => 'NADH dehydrogenase subunit 3',
+	'nad4'  => 'NADH dehydrogenase subunit 4',
 	'nad4L' => 'NADH dehydrogenase subunit 4L',
-	'nad5' => 'NADH dehydrogenase subunit 5',
-	'nad6' => 'NADH dehydrogenase subunit 6'
+	'nad5'  => 'NADH dehydrogenase subunit 5',
+	'nad6'  => 'NADH dehydrogenase subunit 6'
 );
 
 #my %geneticCode=('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11');
@@ -348,11 +349,12 @@ my %names_gene=(
 
 ## General variables
 my $PROGRAMNAME= "MITOS2gbk";
-my $VERSION= "0.2";
+my $VERSION= "0.3";
 
 #my $NCBIGENCODEFILE= "/media/manzanoa/DATA/DBs/NCBI/NCBI_genCode_v18-11-2016.prt";
-my $NCBIGENCODEFILE= "NCBI_genCode_v4.2.txt";
+my $NCBIGENCODEFILE= dirname(__FILE__) . "/NCBI_genCode_v4.6.txt";
 my %genCode= %{&loadGenCodeNCBI($NCBIGENCODEFILE)}; # Load NCBI genetic code table
+#print STDERR Data::Dumper->Dumper(%genCode);
 
 ## Define options default values
 my $opt_inFile= '';
@@ -365,7 +367,7 @@ my $opt_noCDS=0;
 my $opt_outFormat= 0;
 my $opt_outPrefix= '';
 
-my $opt_MITOSversion= 'rev917';
+my $opt_MITOSversion= 'rev6b33f95';
 
 my $opt_verbose= 0;
 my $opt_man= 0;
@@ -408,15 +410,15 @@ MITOS2gbk
 
 =head1 VERSION
 
-MITOS2gbk v0.1
+MITOS2gbk v0.3
 
 =head1 SYNOPSIS
 
-perl MITOS2gbk.pl --infile|-i [--infasta|--if] <MITOS_result_file> [--verbose|-v] [--help|-h] [--man] [--version]
+perl MITOS2gbk.pl --infile|-i <result> [--infasta|--if] <sequence.fas> [--verbose|-v] [--help|-h] [--man] [--version]
 
 =head1 DESCRIPTION
 
-This program uses the output from the MITOS v1.x pipeline (http://mitos.bioinf.uni-leipzig.de) and produces a complete annotation file (so far, only GenBank supported).
+This program uses the output from the MITOS v1.x and v2.x pipeline (http://mitos.bioinf.uni-leipzig.de) and produces a complete annotation file (so far, only GenBank supported).
 
 =head1 OPTIONS
 
@@ -537,7 +539,8 @@ if ($opt_verbose){
 
 ### Get date for header
 $dateString= localtime();
-if ($dateString=~ m/^\S+ (\S+) (\S+) \S+ (\S+)/){
+
+if ($dateString=~ m/^\S+\s+(\S+)\s+(\S+)\s+\S+\s+(\S+)/){
 	$dateString= $2 . '-' . $1 . '-' . $3;
 }
 else {
@@ -576,42 +579,60 @@ if ($opt_verbose){
 print STDOUT "FEATURES             Location/Qualifiers\n";
 open (MITOSRESULT, '<', $opt_inFile) || die "Unable to open file $opt_inFile for reading\n$!\n";
 while ($line= <MITOSRESULT>){
-	if ($line =~ m/^\S+\t(\S+)\t(\S+)\t(\S+)\t(\S+)\t(\S+)\t(\S+)\t\S+\t(\S+)\t\S+\t\S+\t\S+\t(\S+)$/){
+	if ($line =~ m/^\S+\t(\S+)\t(\S+)\t(\S+)\t(\S+)\t(\S+)\t(\S+)\t\S+(\t\S+)?\t(\S+)\t(\S+\t)?\S+\t\S+\t\S+\t(\S+)$/){
 		$feat_type= $1;
+		$qualifiers{'gene'}= $2;
+		$qualifiers{'inference'}= $3; # This one assumes MiTFI v0.1, MITOS revision is controlled by the "MITOSversion" option
+		$feat_start= $4;
+		$feat_end= $5;
+		$feat_strand= $6;
+		$unkField1= $7;
+		$trna_codon= $8; # add check
+		$unkField2= $9;
+		$codon_start= $10; # add check
+		
 		if ($feat_type eq 'gene' && $opt_noCDS){
 			next;
 		}
 		if ($feat_type eq 'gene'){
 			$feat_type= 'CDS';
 		}
-		$qualifiers{'gene'}= $2;
 		if ($qualifiers{'gene'} eq 'nad4l'){
 			$qualifiers{'gene'}= 'nad4L';
 		}
-		$qualifiers{'inference'}= $3; # This one assumes MiTFI v0.1, MITOS revision is controlled by the "MITOSversion" option
 		if ($qualifiers{'inference'} eq 'mitfi'){
 			$qualifiers{'inference'}= 'COORDINATES:profile:MiTFi:0.1';
 		}
 		elsif ($qualifiers{'inference'} eq 'mitos'){
 			$qualifiers{'inference'}= "EXISTENCE:similar to AA sequence:MITOS:$opt_MITOSversion";
 		}
-		$feat_strand= $6;
+
 		if ($feat_strand==-1){
-			$feat_location= 'complement(' . ($4+1) . '..' . ($5+1) . ')';
+			$feat_location= 'complement(' . ($feat_start+1) . '..' . ($feat_end+1) . ')';
 		}
 		else {
-			$feat_location= ($4+1) . '..' . ($5+1);
+			$feat_location= ($feat_start+1) . '..' . ($feat_end+1);
 		}
-		$tRNA_anticodon=$7;
+		
+		# Check if fields 7 and 9 do not exist, if the do, then the result file comes form MITOS v2.x
+		if (!$unkField1 && !$unkField2){
+			$tRNA_anticodon= &revComp(\$trna_codon);
+		}
+		else {
+			$tRNA_anticodon= $trna_codon;
+		}
 		$tRNA_anticodon=~ tr/ATGC/atgc/;
 		if ($feat_type eq 'tRNA'){
 			if ($feat_strand==-1){
-				$anticodon_location= 'complement(' . ($5+1-$8-2) . '..' . ($5+1-$8) . ')';
+				$anticodon_location= 'complement(' . ($feat_end+1-$codon_start-2) . '..' . ($feat_end+1-$codon_start) . ')';
 			}
 			else {
-				$anticodon_location= ($4+1+$8) . '..' . ($4+1+$8+2);
+				$anticodon_location= ($feat_start+1+$codon_start) . '..' . ($feat_start+1+$codon_start+2);
 			}
 			$qualifiers{'anticodon'}= '(pos:' . $anticodon_location . ',aa:' . $genCode{$opt_genCode}{$tRNA_anticodon}{'aa_threeLetter'} . ',seq:' . $tRNA_anticodon . ')';
+		}
+		if ($codon_start eq '.'){
+			$codon_start= 0;
 		}
 	
 		### Print feature and qualifiers
@@ -621,7 +642,7 @@ while ($line= <MITOSRESULT>){
 		print STDOUT sprintf("                     %s\n", "/inference=\"$qualifiers{'inference'}\"");
 		if ($feat_type eq "CDS"){
 			print STDOUT sprintf("                     %s\n", "/transl_table=$opt_genCode");
-			print STDOUT sprintf("                     %s\n", "/codon_start=1");
+			print STDOUT sprintf("                     %s\n", '/codon_start=' . ($codon_start+1));
 		}
 		if ($feat_type eq "tRNA"){
 			print STDOUT sprintf("                     %s\n", "/anticodon=$qualifiers{'anticodon'}");
@@ -630,6 +651,7 @@ while ($line= <MITOSRESULT>){
 			$qualifiers{'gene'}=~ m/^trn(\w)/;
 			$MiTFI_aa= $1;
 			if ($genCode{$opt_genCode}{$tRNA_anticodon}{'aa_oneLetter'} ne $MiTFI_aa){
+				print STDERR "Gencode: $opt_genCode\nAnticodon: $tRNA_anticodon\nOneLetter_AA: $genCode{$opt_genCode}{$tRNA_anticodon}{'aa_oneLetter'}\nMiTfI_AA: $MiTFI_aa\n";
 				print STDOUT sprintf("                     %s\n", "/note=\"check, anticodon and MiTFI amino acid assignment differ\"");
 			}
 		}
